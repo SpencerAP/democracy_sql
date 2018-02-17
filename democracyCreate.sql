@@ -18,7 +18,7 @@ friends_count   VARCHAR(5),
 listed_count    VARCHAR(5)
 );
 
-COPY twitter_user FROM '/path/to/users.csv' WITH (FORMAT csv);
+COPY twitter_user FROM :users WITH (FORMAT csv);
 
 UPDATE twitter_user SET id = null WHERE id = '';
 ALTER TABLE twitter_user ADD CONSTRAINT twitter_user_id_key UNIQUE (id);
@@ -60,7 +60,7 @@ retweeted_status_id   VARCHAR(19),
 in_reply_to_status_id VARCHAR(21)
 );
 
-COPY tweet FROM '/path/to/tweets.csv' WITH (FORMAT csv);
+COPY tweet FROM :tweets WITH (FORMAT csv);
 
 UPDATE tweet SET user_id = null WHERE user_id = '';
 
