@@ -12,11 +12,15 @@ Tested on PostgreSQL 9.3.21, may require adaptation to work with other RDBMSs or
 
 ## Usage
 
-Download the [tweets.csv](http://nodeassets.nbcnews.com/russian-twitter-trolls/tweets.csv) and [users.csv](http://nodeassets.nbcnews.com/russian-twitter-trolls/users.csv).
+Prerequisite: install and configure PostgreSQL.
 
-Run (as Postgres super user):
+Download  [tweets.csv](http://nodeassets.nbcnews.com/russian-twitter-trolls/tweets.csv) and [users.csv](http://nodeassets.nbcnews.com/russian-twitter-trolls/users.csv).
+
+As a user with superuser status, run:
 
 `psql -f democracyCreate.sql -v users="'/path/to/users.csv'" -v tweets="'/path/to/tweets.csv'"`
+
+_Note: this will name the database "democracy"; if you already have a database with that name, edit the first line of the script to call it something else instead._
 
 The schema that results will look like:
 
