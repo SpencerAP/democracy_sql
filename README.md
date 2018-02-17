@@ -8,7 +8,7 @@ NBC has [published a database](https://www.nbcnews.com/tech/social-media/now-ava
 
 But what if you want to explore the data in your own PostgreSQL database? Here is some SQL to create the database and tables, import the CSV files, and convert text data to more convenient formats.
 
-Tested on PostgreSQL 9.3.21, may require adaptation to work with other SQL databases or versions.
+Tested on PostgreSQL 9.3.21, may require adaptation to work with other RDBMSs or versions.
 
 ## Usage
 
