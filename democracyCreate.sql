@@ -1,24 +1,30 @@
 CREATE DATABASE democracy;
 \c democracy
 
+-- initially everything needs to be varchar
+-- for compatibility with these CSVs
 CREATE TABLE twitter_user (
-id              VARCHAR(18),
-location        VARCHAR(29),
-name            VARCHAR(20),
-followers_count VARCHAR(5),
-statuses_count  VARCHAR(5),
-time_zone       VARCHAR(27),
-verified        VARCHAR(5),
-lang            VARCHAR(2),
-screen_name     VARCHAR(15),
-description     VARCHAR(160),
-created_at      VARCHAR(40),
+id               VARCHAR(18),
+location         VARCHAR(29),
+name             VARCHAR(20),
+followers_count  VARCHAR(5),
+statuses_count   VARCHAR(5),
+time_zone        VARCHAR(27),
+verified         VARCHAR(5),
+lang             VARCHAR(2),
+screen_name      VARCHAR(15),
+description      VARCHAR(160),
+created_at       VARCHAR(40),
 favourites_count VARCHAR(5),
-friends_count   VARCHAR(5),
-listed_count    VARCHAR(5)
+friends_count    VARCHAR(5),
+listed_count     VARCHAR(5)
 );
 
+-- import
+
 COPY twitter_user FROM :users DELIMITER ',' CSV HEADER;
+
+-- improve schema
 
 UPDATE twitter_user SET id = null WHERE id = '';
 ALTER TABLE twitter_user ADD CONSTRAINT twitter_user_id_key UNIQUE (id);
@@ -41,6 +47,8 @@ ALTER TABLE twitter_user ALTER COLUMN verified TYPE boolean USING (verified::boo
 UPDATE twitter_user SET created_at = null WHERE created_at = '';
 ALTER TABLE twitter_user ALTER COLUMN created_at TYPE timestamp with time zone USING (created_at::timestamp);
 
+-- initially everything needs to be varchar
+-- for compatibility with these CSVs
 CREATE TABLE tweet (
 user_id               VARCHAR(18),
 user_key              VARCHAR(15),
@@ -60,7 +68,11 @@ retweeted_status_id   VARCHAR(19),
 in_reply_to_status_id VARCHAR(21)
 );
 
+-- import
+
 COPY tweet FROM :tweets DELIMITER ',' CSV HEADER;
+
+-- improve schema
 
 UPDATE tweet SET user_id = null WHERE user_id = '';
 
