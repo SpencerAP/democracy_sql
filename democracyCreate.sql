@@ -29,12 +29,12 @@ COPY twitter_user FROM :users DELIMITER ',' CSV HEADER;
 UPDATE twitter_user SET id = null WHERE id = '';
 ALTER TABLE twitter_user ADD CONSTRAINT twitter_user_id_key UNIQUE (id);
 
+-- can't cast empty string directly to int, need to set as null first
 UPDATE twitter_user SET followers_count = null WHERE followers_count = '';
 UPDATE twitter_user SET statuses_count = null WHERE statuses_count = '';
 UPDATE twitter_user SET favourites_count = null WHERE favourites_count = '';
 UPDATE twitter_user SET friends_count = null WHERE friends_count = '';
 UPDATE twitter_user SET listed_count = null WHERE listed_count = '';
-
 ALTER TABLE twitter_user ALTER COLUMN followers_count TYPE integer USING (followers_count::integer);
 ALTER TABLE twitter_user ALTER COLUMN statuses_count TYPE integer USING (statuses_count::integer);
 ALTER TABLE twitter_user ALTER COLUMN favourites_count TYPE integer USING (favourites_count::integer);
@@ -76,19 +76,20 @@ COPY tweet FROM :tweets DELIMITER ',' CSV HEADER;
 
 UPDATE tweet SET user_id = null WHERE user_id = '';
 
+-- format appears to be epoch w/ milliseconds
 UPDATE tweet SET created_at = null WHERE created_at = '';
 ALTER TABLE tweet ALTER COLUMN created_at TYPE bigint USING (round(created_at::bigint / 1000));
 ALTER TABLE tweet ALTER COLUMN created_at TYPE timestamp with time zone USING (to_timestamp(created_at));
 
 UPDATE tweet SET retweet_count = null WHERE retweet_count = '';
 UPDATE tweet SET favorite_count = null WHERE favorite_count = '';
-
 ALTER TABLE tweet ALTER COLUMN retweet_count TYPE integer USING (retweet_count::integer);
 ALTER TABLE tweet ALTER COLUMN favorite_count TYPE integer USING (favorite_count::integer);
 
 UPDATE tweet SET retweeted = null WHERE retweeted = '';
 ALTER TABLE tweet ALTER COLUMN retweeted TYPE boolean USING (retweeted::boolean);
 
+-- format appears to be json arrays
 ALTER TABLE tweet ALTER COLUMN expanded_urls TYPE json USING (expanded_urls::json);
 ALTER TABLE tweet ALTER COLUMN hashtags TYPE json USING (hashtags::json);
 ALTER TABLE tweet ALTER COLUMN mentions TYPE json USING (mentions::json);
